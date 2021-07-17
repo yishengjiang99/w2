@@ -1,0 +1,25 @@
+<script type="module">
+  import { init, mem } from "./build/pdta.js";
+  import { sfbkstream } from "./node_modules/parse-sf2/dist/sfbkstream.js";
+  init().then(({ pdta}) => {
+    sfbkstream("file.sf2").then(async ({ pdtaBuffer, sdtaStream }) => {
+      const heap = new Uint8Array(mem.buffer);
+      heap.set(pdtaBuffer, 20);
+      const r=await init(20);
+      const list =pdtaBuffer.byteLength+20;
+
+      r.readpdta(20, list);
+      const ptrs=new DataView(heap.buffer,r);
+      ptrs.getUint32(0,true); let k=0;
+      console.log(heap.slice(ptrs.getUint32(k+=4,true),500));
+      console.log(heap.slice(ptrs.getUint32(k+=4,true),500));
+      console.log(heap.slice(ptrs.getUint32(k+=4,true),500));
+      console.log(heap.slice(ptrs.getUint32(k+=4,true),500));
+      console.log(heap.slice(ptrs.getUint32(k+=4,true),500));
+      console.log(heap.slice(ptrs.getUint32(k+=4,true),500));
+      console.log(heap.slice(ptrs.getUint32(k+=4,true),500));
+
+
+    });
+  });
+</script>
